@@ -24,4 +24,13 @@ class Images {
   static const String explore = kIConDir + 'explore.svg';
   static const String inbox = kIConDir + 'inbox.svg';
   static const String addFriend = kIConDir + 'add_friend.svg';
+  static const String accountInfo = kIConDir + 'account_info.svg';
+  static const String addressBook = kIConDir + 'address_book.svg';
+  static const String message = kIConDir + 'message.svg';
+  static const String language = kIConDir + 'language.svg';
+  static const String general = kIConDir + 'general.svg';
+  static const String policies = kIConDir + 'policies.svg';
+  static const String helps = kIConDir + 'helps.svg';
+  static const String country = kIConDir + 'country.svg';
+  static const String makePayment = kIConDir + 'make_payment.svg';
 }

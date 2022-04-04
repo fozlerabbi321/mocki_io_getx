@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../constants/colors_data.dart';
+import '../../../constants/images.dart';
 import '../../../constants/style_data.dart';
 import '../../../controler/theme_controller.dart';
-import '../../../services/api/app_config.dart';
-import '../../../services/localization_services.dart';
-import 'widgets/setting_widgets.dart';
+import 'language_screen.dart';
+import 'widgets/profile_button.dart';
+import 'widgets/profile_button2.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,77 +14,75 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Account'.tr),
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        physics: const ScrollPhysics(),
-        children: [
-          AccountBtnWidget(
-            title: 'Login/Register'.tr,
-            icon: Icons.power_settings_new,
-            onPress: () {
-            },
-          ),
-          AccountBtnWidget(
-            title: 'My Order'.tr,
-            icon: Icons.bookmark_border,
-            onPress: () {
-            },
-          ),
-          AccountBtnWidget(
-            title: 'My Profile'.tr,
-            icon: Icons.person,
-            onPress: () {
-            },
-          ),
-          Divider(
-            thickness: 6,
-            color: kOrdinaryColor.withOpacity(.1),
-          ),
-          AccountBtnWidget(
-            title: LocalizationService().getCurrentLang() == 'Bangla'
-                ? 'Bangla'.tr
-                : 'English',
-            icon: Icons.language,
-            onPress: () {
-              if (LocalizationService().getCurrentLang() == 'Bangla') {
-                LocalizationService().changeLocale('English');
-              } else {
-                LocalizationService().changeLocale('Bangla');
-              }
-            },
-          ),
-          GetBuilder<ThemeController>(
-            builder: (themeController) {
-              return AccountBtnWidget(
-                title: 'Change Theme'.tr,
-                icon: themeController.darkTheme
-                    ? Icons.light_mode
-                    : Icons.dark_mode,
-                onPress: () {
-                  Get.find<ThemeController>().toggleTheme();
-                },
-              );
-            },
-          ),
-          Divider(
-            thickness: 6,
-            color: kOrdinaryColor.withOpacity(.1),
-          ),
-          Divider(
-            thickness: 6,
-            color: kOrdinaryColor.withOpacity(.1),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              'Version'.tr + ' ' + kAppVersion,
-              style: kRegularText,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Column(
+              children: [
+                Card(
+                  color: Theme.of(context).cardColor,
+                  margin: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  elevation: 1.0,
+                  child: Column(
+                    children: [
+                      ProfileButton(
+                          icon: Images.accountInfo,
+                          title: 'Account Information'.tr,
+                          onTap: () {
+                          }),
+                      ProfileButton(
+                          icon: Images.addressBook,
+                          title: 'Address Book'.tr,
+                          onTap:() {}),
+                      ProfileButton(
+                          icon: Images.message,
+                          title: 'Messages'.tr,
+                          subTitle:
+                          'Receive exclusive offers and personal updates'.tr,
+                          onTap:() {}),
+                      ProfileButton(
+                          icon: Images.language,
+                          title: 'Language'.tr,
+                          onTap: () {
+                            Get.to(
+                                  () => const LanguageScreen(),
+
+                            );
+                          }),
+                      ProfileButton(
+                        icon: Images.makePayment,
+                        title: 'Manage Payment'.tr,
+                        onTap: () {
+                        },
+                      ),
+                      ProfileButton(
+                        icon: Images.policies,
+                        title: 'Policies'.tr,
+                          onTap:() {}),
+                      ProfileButton(
+                          icon: Images.helps,
+                          title: 'Help'.tr,
+                          onTap:() {}),
+                      ProfileButton2(
+                        icon: Icons.dark_mode,
+                        title: 'Dark Mode'.tr,
+                        radius: 5,
+                        isButtonActive: Get.isDarkMode,
+                          onTap:() {
+                            Get.find<ThemeController>().toggleTheme();
+                          }),
+                    ],
+                  ),
+                ),
+                kHeightBox40,
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
