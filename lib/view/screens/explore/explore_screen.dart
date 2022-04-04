@@ -17,14 +17,17 @@ import '../../widgets/custom_loader.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../widgets/default_btn.dart';
+import 'widgets/product_shimmer.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({Key? key}) : super(key: key);
 
   Future<void> _loadData(bool reload) async {
     Get.find<ProductsController>().setOffset(1);
-    Get.find<ProductsController>()
-        .getNotificationList('1', reload, );
+    Get.find<ProductsController>().getNotificationList(
+      '1',
+      reload,
+    );
   }
 
   @override
@@ -36,7 +39,7 @@ class ExploreScreen extends StatelessWidget {
 
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent &&
+              scrollController.position.maxScrollExtent &&
           !Get.find<ProductsController>().isLoading) {
         int pageSize = Get.find<ProductsController>().popularPageSize;
         if (Get.find<ProductsController>().productList.length < pageSize) {
@@ -45,8 +48,10 @@ class ExploreScreen extends StatelessWidget {
           log('end page');
           Get.find<ProductsController>().showBottomLoader();
           Get.find<ProductsController>().getNotificationList(
-            Get.find<ProductsController>().offset.toString(), false,);
-        }else{
+            Get.find<ProductsController>().offset.toString(),
+            false,
+          );
+        } else {
           showCustomSnackBar('No more data available');
         }
       }
@@ -64,70 +69,94 @@ class ExploreScreen extends StatelessWidget {
         ),
         elevation: 0.5,
       ),
-      body: GetBuilder<ProductsController>(
-        builder: (productsController) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        child: productsController.isShimmerLoading
-                            ? Container()
-                            : productsController.productList.isNotEmpty
-                            ? Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10,),
-                              child: SingleChildScrollView(
-                          controller: scrollController,
-                          child: MasonryGridView.count(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              crossAxisCount: 3,
-                              scrollDirection: Axis.vertical,
-                              itemCount: productsController.productList.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              mainAxisSpacing: 6.0,
-                              crossAxisSpacing: 6.0,
-                              itemBuilder: (context, int index) {
-                                return InkWell(
-                                  onTap: (){
-                                    productPopup(context,productsController.productList[index],productsController,);
-                                  },
-                                  child: CustomImage(
-                                    image: productsController.productList[index].thumbnail,
-                                    radius: 15,
-                                  ),
-                                );
-                              },
-                          ),
-                        ),
-                            )
-                            : Center(
-                          child: Text(
-                            'No data available',
-                            style: kRegularText2,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: CustomBottomLoader(
-                            isLoading: productsController.isLoading),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
+      body: RefreshIndicator(
+        color: kPrimaryColor,
+        backgroundColor: Theme.of(context).cardColor,
+        displacement: 0,
+        onRefresh: () async {
+          _loadData(true);
         },
+        child: GetBuilder<ProductsController>(
+          builder: (productsController) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Container(
+                          child: productsController.isShimmerLoading
+                              ? const ProductShimmer(
+                                  count: 39,
+                                )
+                              : productsController.productList.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 10,
+                                      ),
+                                      child: SingleChildScrollView(
+                                        controller: scrollController,
+                                        child: MasonryGridView.count(
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.zero,
+                                          crossAxisCount: 3,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: productsController
+                                              .productList.length,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          mainAxisSpacing: 6.0,
+                                          crossAxisSpacing: 6.0,
+                                          itemBuilder: (context, int index) {
+                                            return InkWell(
+                                              onTap: () {
+                                                productPopup(
+                                                  context,
+                                                  productsController
+                                                      .productList[index],
+                                                  productsController,
+                                                );
+                                              },
+                                              child: CustomImage(
+                                                image: productsController
+                                                    .productList[index]
+                                                    .thumbnail,
+                                                radius: 15,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'No data available',
+                                        style: kRegularText2,
+                                      ),
+                                    ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CustomBottomLoader(
+                              isLoading: productsController.isLoading),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
-  productPopup(BuildContext context, Products products, ProductsController productsController) {
+
+  productPopup(BuildContext context, Products products,
+      ProductsController productsController) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -218,21 +247,20 @@ class ExploreScreen extends StatelessWidget {
                           autoPlay: true,
                           autoPlayInterval: const Duration(seconds: 5),
                           autoPlayAnimationDuration:
-                          const Duration(milliseconds: 1000),
+                              const Duration(milliseconds: 1000),
                           autoPlayCurve: Curves.easeInCubic,
                           enlargeCenterPage: true,
                           scrollDirection: Axis.horizontal,
                           onPageChanged: (int sliderIndex, reason) {
-                            productsController
-                                .updateSlider(sliderIndex);
+                            productsController.updateSlider(sliderIndex);
                           }),
                       items: products.images!
                           .map(
                             (item) => CustomImage(
-                          image: item,
-                          radius: 15,
-                        ),
-                      )
+                              image: item,
+                              radius: 15,
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
