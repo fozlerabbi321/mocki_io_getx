@@ -10,6 +10,7 @@ import 'package:mystarter/models/response/rp_products.dart';
 import '../../../constants/colors_data.dart';
 import '../../../constants/size_config.dart';
 import '../../../constants/style_data.dart';
+import '../../../controler/cart_controller.dart';
 import '../../../controler/products_controller.dart';
 import '../../widgets/custom_field.dart';
 import '../../widgets/custom_image.dart';
@@ -267,6 +268,34 @@ class ExploreScreen extends StatelessWidget {
                           )
                           .toList(),
                     ),
+                    Positioned(
+                      bottom: 5,
+                      right: 5,
+                      child: InkWell(
+                        onTap: (){
+                          Get.find<CartController>().addToCart(
+                            products,
+                            price: products.price ?? 0,
+                            quantity: 1,
+                            stockQty: products.stock ?? 1,
+                            size: 'S',
+                            color: 'Red',
+                            productVariantId: 1,
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5,),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: kPrimaryColor,
+                          ),
+                          child: SvgPicture.asset(
+                            Images.cart,
+                            color: kWhiteColor,
+                          ),
+                        ),
+                      ),
+                ),
                   ],
                 ),
                 kHeightBox15,

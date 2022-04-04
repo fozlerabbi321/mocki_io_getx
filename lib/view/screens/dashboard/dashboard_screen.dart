@@ -7,6 +7,7 @@ import 'package:mystarter/constants/images.dart';
 import '../../widgets/custom_alert_dialog.dart';
 import '../explore/explore_screen.dart';
 import '../home/home_screen.dart';
+import '../shop/shop_screen.dart';
 import 'widgets/bottom_nav_item.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class YourPageState extends State<DashboardScreen> {
     const ExploreScreen(),
     const HomeScreen(),
     const HomeScreen(),
-    const HomeScreen(),
+    const ShopScreen(),
   ];
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   final bool _canExit = GetPlatform.isWeb ? true : false;
