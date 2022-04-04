@@ -19,4 +19,7 @@ class Images {
   static const String review = kIConDir + 'review.svg';
   static const String category = kIConDir + 'category.svg';
   static const String close = kIConDir + 'close.svg';
+  static const String add = kIConDir + 'add.svg';
+  static const String explore = kIConDir + 'explore.svg';
+  static const String inbox = kIConDir + 'inbox.svg';
 }

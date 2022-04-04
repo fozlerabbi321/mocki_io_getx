@@ -1,123 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
 import 'package:mystarter/constants/colors_data.dart';
 import 'package:mystarter/constants/images.dart';
 
 import '../../widgets/custom_alert_dialog.dart';
 import '../home/home_screen.dart';
+import 'widgets/bottom_nav_item.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const routeName = 'dashboard';
   const DashboardScreen({Key? key, this.index = 0}) : super(key: key);
-  final int? index;
+  final int index;
 
   @override
   YourPageState createState() => YourPageState();
 }
 
 class YourPageState extends State<DashboardScreen> {
-  var pageController = PageController();
-  late int _selectedIndex;
-  final List<Widget> _screen = [
+  PageController? _pageController;
+  int _pageIndex = 0;
+  final List<Widget> _screens = [
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),
   ];
-  void _onPageChanged(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
+  final bool _canExit = GetPlatform.isWeb ? true : false;
 
   @override
   void initState() {
-    _selectedIndex = widget.index!;
-
-    ///Code Codecanyon Version
-    ///Design Image Include 1.0
-    ///Design Image hide 1.0
     super.initState();
+
+    _pageIndex = widget.index;
+
+    _pageController = PageController(initialPage: widget.index);
+
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_selectedIndex == 0) {
-          return _onBackPressed();
+        if (_pageIndex != 0) {
+          _setPage(0);
+          return false;
         } else {
-          setState(() {
-            _selectedIndex = 0;
-          });
+          if (_canExit) {
+            return true;
+          } else {
+            return _onBackPressed();
+          }
         }
-        return false;
       },
       child: Scaffold(
-        body: _screen[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 0.0,
-          type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true,
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Theme.of(context).primaryColor,
-          onTap: _onPageChanged,
-          currentIndex: _selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Images.home,
-                color: _selectedIndex == 0
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey,
+        key: _scaffoldKey,
+        bottomNavigationBar: BottomAppBar(
+          elevation: 5,
+          notchMargin: 5,
+          clipBehavior: Clip.antiAlias,
+          shape: const CircularNotchedRectangle(),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(children: [
+              BottomNavItem(
+                iconData: Images.home,
+                label: "Home".tr,
+                isSelected: _pageIndex == 0,
+                onTap: () => _setPage(0),
               ),
-              label: "Home".tr,
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Images.category,
-                color: _selectedIndex == 1
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey,
+              BottomNavItem(
+                  iconData: Images.explore,
+                  label: "Explore".tr,
+                  size: 20,
+                  isSelected: _pageIndex == 1,
+                  onTap: () => _setPage(1)),
+              Container(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: FloatingActionButton(
+                  elevation: 5,
+                  backgroundColor: Get.isDarkMode ?  kWhiteColor : const Color(0xFF040415),
+                  onPressed: () {
+
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Get.isDarkMode ?  kBlackColor2 : kWhiteColor,
+                  ),
+                ),
               ),
-              label: "Category".tr,
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Images.review,
-                color: _selectedIndex == 2
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey,
-              ),
-              label: "Review".tr,
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Images.cart,
-                color: _selectedIndex == 3
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey,
-              ),
-              label: "Cart".tr,
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                Images.account,
-                color: _selectedIndex == 4
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey,
-              ),
-              label: "Account".tr,
-            ),
-          ],
+              BottomNavItem(
+                  iconData: Images.inbox,
+                  label: "Inbox".tr,
+                  isSelected: _pageIndex == 3,
+                  onTap: () => _setPage(3)),
+              BottomNavItem(
+                  iconData: Images.cart,
+                  label: "Shop".tr,
+                  isSelected: _pageIndex == 4,
+                  onTap: () => _setPage(4)),
+            ]),
+          ),
+        ),
+        body: PageView.builder(
+          controller: _pageController,
+          itemCount: _screens.length,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return _screens[index];
+          },
         ),
       ),
     );
   }
 
+  void _setPage(int pageIndex) {
+    setState(() {
+      _pageController?.jumpToPage(pageIndex);
+      _pageIndex = pageIndex;
+    });
+  }
   Future<bool> _onBackPressed() {
     return CustomAlertDialog()
         .customAlert(
