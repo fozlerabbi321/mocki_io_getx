@@ -14,7 +14,7 @@ class ApiClient {
 
   String? currentToken = prefs.getString(token);
   Map<String, String>? _mainHeaders = {
-    'Accept': 'application/json;',
+    'Accept': 'application/json',
   };
   void updateHeader(String token, String zoneID) {
     _mainHeaders = {

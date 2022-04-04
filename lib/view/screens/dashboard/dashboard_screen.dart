@@ -5,6 +5,7 @@ import 'package:mystarter/constants/colors_data.dart';
 import 'package:mystarter/constants/images.dart';
 
 import '../../widgets/custom_alert_dialog.dart';
+import '../explore/explore_screen.dart';
 import '../home/home_screen.dart';
 import 'widgets/bottom_nav_item.dart';
 
@@ -22,7 +23,7 @@ class YourPageState extends State<DashboardScreen> {
   int _pageIndex = 0;
   final List<Widget> _screens = [
     const HomeScreen(),
-    const HomeScreen(),
+    const ExploreScreen(),
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),

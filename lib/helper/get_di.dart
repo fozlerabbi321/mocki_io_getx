@@ -3,8 +3,9 @@ import 'package:mystarter/controler/theme_controller.dart';
 import 'package:mystarter/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controler/products_controller.dart';
 import '../services/api/api_client.dart';
-import '../services/repository/test_repo.dart';
+import '../services/repository/product_repo.dart';
 
 Future<void> init() async {
   /// Core
@@ -22,7 +23,7 @@ Future<void> init() async {
 
   /// Repositories
   Get.lazyPut(
-    () => TestRepo(
+    () => ProductRepo(
       apiClient: Get.find(),
     ),
     fenix: true,
@@ -31,4 +32,5 @@ Future<void> init() async {
   /// sqlite database controllers
 
   /// Controllers
+  Get.lazyPut(() => ProductsController(productRepo: Get.find(),));
 }

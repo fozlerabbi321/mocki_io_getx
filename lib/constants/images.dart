@@ -11,6 +11,7 @@ class Images {
   static const String introDark1 = kImageDir + 'intro1.png';
   static const String introDark2 = kImageDir + 'intro2.png';
   static const String introDark3 = kImageDir + 'intro3.png';
+  static const String placeHolder = kImageDir + 'placeholder.png';
 
   ///SVG Image
   static const String home = kIConDir + 'home.svg';
@@ -22,4 +23,5 @@ class Images {
   static const String add = kIConDir + 'add.svg';
   static const String explore = kIConDir + 'explore.svg';
   static const String inbox = kIConDir + 'inbox.svg';
+  static const String addFriend = kIConDir + 'add_friend.svg';
 }
