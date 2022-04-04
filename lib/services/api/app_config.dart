@@ -1,6 +1,7 @@
 var thisYear = DateTime.now().year.toString();
 
 const String appName = "Test Softcent"; //this shows in the splash screen
+const String kAppVersion = "1.0.0"; //this shows in the splash screen
 String copyrightText =
     "@ $appName " + thisYear; //this shows in the splash screen
 

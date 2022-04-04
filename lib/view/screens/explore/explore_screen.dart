@@ -181,28 +181,32 @@ class ExploreScreen extends StatelessWidget {
                       image: products.thumbnail,
                     ),
                     kWidthBox10,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          products.title ?? '',
-                          style: kRegularText2.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Get.isDarkMode
-                                ? kWhiteColor
-                                : const Color(0xFF172B4D),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            products.title ?? '',
+                            maxLines: 1,
+                            style: kRegularText2.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: Get.isDarkMode
+                                  ? kWhiteColor
+                                  : const Color(0xFF172B4D),
+                            ),
                           ),
-                        ),
-                        Text(
-                          products.brand ?? '',
-                          style: kSmallText.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Get.isDarkMode
-                                ? kWhiteColor
-                                : const Color(0xFF172B4D),
+                          Text(
+                            products.brand ?? '',
+                            maxLines: 1,
+                            style: kSmallText.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: Get.isDarkMode
+                                  ? kWhiteColor
+                                  : const Color(0xFF172B4D),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const Spacer(),
                     InkWell(
