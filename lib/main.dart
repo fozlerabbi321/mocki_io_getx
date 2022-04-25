@@ -6,9 +6,9 @@ import 'package:mystarter/constants/theme/dark_theme.dart';
 import 'package:mystarter/constants/theme/light_theme.dart';
 import 'package:mystarter/controler/theme_controller.dart';
 import 'package:mystarter/helper/get_di.dart';
-import 'package:mystarter/helper/localization_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'services/localization_services.dart';
 import 'view/screens/splash/splash_screen.dart';
 
 late SharedPreferences prefs;
@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: appName,
           theme: themeController.darkTheme ? dark : light,
-          translations: LocalizationHelper(),
-          locale: LocalizationHelper().getCurrentLocale(),
+          translations: LocalizationService(),
+          locale: LocalizationService().getCurrentLocale(),
           fallbackLocale: const Locale(
             'en',
             'US',

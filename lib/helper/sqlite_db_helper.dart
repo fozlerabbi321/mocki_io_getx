@@ -105,24 +105,6 @@ class DatabaseHelper {
   ///=----End Cart ----=======////
 }
 
-//
-class FavouriteColumn {
-  static const columnId = 'id';
-  static const columnName = 'product_name';
-  static const columnPrice = 'price';
-  static const columnImage = 'image';
-}
-//
-// class RecentColumn {
-//   static const columnId = 'id';
-//   static const columnProducts = 'product';
-// }
-
-class SuggestionColumn {
-  static const columnTitle = 'title';
-  static const columnId = 'id';
-}
-
 class CartColumn {
   static const columnId = 'id';
   static const columnPrice = 'price';
