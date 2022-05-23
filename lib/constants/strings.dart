@@ -1,3 +1,5 @@
+import '../services/api/app_config.dart';
+
 const String kIConDir = 'assets/icons/';
 const String kImageDir = 'assets/images/';
 const String kFlagDir = 'assets/flags/';
@@ -7,6 +9,9 @@ const String kBase64Extend = 'data:image/jpeg;base64,';
 const String kBase64ExtendVideo = 'data:video/mp4;base64,';
 const String kBase64ExtendAudio = 'data:audio/mp3;base64,';
 // String kIsBangla = LocalizationService().getCurrentLang();
+const String dbName = '$appName.db';
+const String tableCartName = 'cart';
+const int dbVersion = 1;
 
 ///Combined User Id to create single chatroom id
 String combinedUserId(String id1, String id2) {

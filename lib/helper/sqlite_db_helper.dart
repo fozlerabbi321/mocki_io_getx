@@ -1,18 +1,11 @@
-import 'dart:developer';
 import 'dart:io';
-
-import 'package:mystarter/services/api/app_config.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../models/response/cart_model.dart';
+import '../constants/strings.dart';
 
 class DatabaseHelper {
-  static const _dbName = '$appName.db';
-  static const _tableCartName = 'cart';
-  static const _dbVersion = 1;
-
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
   static Database? _database;
@@ -27,13 +20,13 @@ class DatabaseHelper {
 
   Future<Database> _initiateDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, _dbName);
-    var database = await openDatabase(path, version: _dbVersion,
+    String path = join(directory.path, dbName);
+    var database = await openDatabase(path, version: dbVersion,
         onCreate: (Database db, int version) async {
 
       //Cart table
       await db.execute('''
-            CREATE TABLE $_tableCartName(
+            CREATE TABLE $tableCartName(
             ${CartColumn.columnId} INTEGER,
             ${CartColumn.columnQty} INTEGER,
             ${CartColumn.columnPrice} INTEGER,
@@ -53,55 +46,6 @@ class DatabaseHelper {
     });
     return database;
   }
-
-  //===
-  //=======
-  ///=----Start Cart ----=======////
-  //Get All all row
-  Future<List<CartModel>> getAllCartList() async {
-    List<CartModel> _posts = [];
-    Database? db = await instance.database;
-    var results = await db!.query(_tableCartName);
-    for (var element in results) {
-      var posts = CartModel.fromJson(element);
-      _posts.add(posts);
-    }
-    return _posts;
-  }
-
-  //Insert row
-  Future insertCart(CartModel model) async {
-    Database? db = await instance.database;
-    var result = await db!.insert(
-      _tableCartName,
-      model.toJson(),
-    );
-    log('result : $result');
-  }
-
-  //Delete row
-  Future<int> deleteCart(int id) async {
-    Database? db = await instance.database;
-    return await db!.delete(_tableCartName,
-        where: '${CartColumn.columnId} = ?', whereArgs: [id]);
-  }
-
-  //update row
-  Future updateCart(int id, int qty) async {
-    Database? db = await instance.database;
-    Map<String, dynamic> row = {
-      CartColumn.columnQty: qty,
-    };
-    return await db?.update(_tableCartName, row,
-        where: '${CartColumn.columnId} = ?', whereArgs: [id]);
-  }
-
-  //remove table
-  Future<void> emptyShopCart() async {
-    Database? db = await instance.database;
-    db?.delete(_tableCartName);
-  }
-
   ///=----End Cart ----=======////
 }
 
